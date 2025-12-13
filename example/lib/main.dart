@@ -154,7 +154,7 @@ class _ExampleHomeScreenState extends State<ExampleHomeScreen> {
         decoration: BoxDecoration(
           border: Border.all(color: Colors.blueAccent, width: 1),
           borderRadius: BorderRadius.circular(8),
-          color: Colors.blue.withOpacity(0.05),
+          color: Colors.blue.withValues(alpha: 0.05),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,7 +446,7 @@ class WidgetExtensionsExample extends StatelessWidget {
                   child: const Center(child: Text('Colored')),
                 ).colorFilter(
                   ColorFilter.mode(
-                      Colors.yellow.withOpacity(0.3), BlendMode.multiply),
+                      Colors.yellow.withValues(alpha: 0.3), BlendMode.multiply),
                 ),
               ],
             ),

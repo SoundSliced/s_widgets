@@ -152,7 +152,7 @@ Icon(Icons.info).addTooltipWidget('This is helpful')
 
 // Add color filter
 Image.asset('image.png').colorFilter(
-  ColorFilter.mode(Colors.blue.withOpacity(0.3), BlendMode.multiply)
+  ColorFilter.mode(Colors.blue.withValues(alpha:0.3), BlendMode.multiply)
 )
 
 // Add border radius

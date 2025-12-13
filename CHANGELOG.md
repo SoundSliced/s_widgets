@@ -1,3 +1,7 @@
+## 1.0.1
+
+* Version 1.0.1
+
 ## 1.0.0
 
 - **Keyboard Management**: `DismissKeyboard` widget to dismiss keyboards on tap, and `InputDoneView` with `KeyboardOverlay` for iOS-style done button overlay

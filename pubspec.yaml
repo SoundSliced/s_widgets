@@ -2,7 +2,7 @@ name: s_widgets
 description: A Flutter package that gathers small custom widgets such as text buttons, loading indicators, and more.
 issue_tracker: https://github.com/SoundSliced/s_widgets/issues
 repository: https://github.com/SoundSliced/s_widgets
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/SoundSliced/s_widgets
 
 environment:
@@ -15,7 +15,6 @@ dependencies:
   new_loading_indicator: ^1.1.0
   flutter_web_frame: ^1.0.0
   ticker_free_circular_progress_indicator: ^1.0.0
-  bubble_label: ^4.0.0
   soundsliced_tween_animation_builder: ^1.2.0
   soundsliced_dart_extensions: ^1.0.1
   flutter_animate: ^4.5.2
@@ -32,3 +31,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:

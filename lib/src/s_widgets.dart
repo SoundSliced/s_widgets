@@ -143,8 +143,8 @@ class KeyboardOverlay {
       _overlayEntry!.remove();
       _overlayEntry = null;
     }
-    //execute the onTap function (if provided)
-    onTapProvided?.call();
+    // Note: onTapProvided is called in InputDoneView.onPressed, not here
+    // to avoid double-calling when Done button is tapped
   }
 }
 
@@ -187,7 +187,7 @@ class SLoadingIndicator extends StatelessWidget {
     return Align(
       alignment: alignment,
       child: Transform.scale(
-        scale: scale,
+        scale: scale ?? 1.0,
         scaleX: scaleX,
         scaleY: scaleY,
         origin: origin,
@@ -412,8 +412,12 @@ class STextButton extends StatelessWidget {
                 ? backgroundColor!
                     .withValues(alpha: backgroundColorOpacity ?? 0.8)
                 : Colors.green.withValues(alpha: backgroundColorOpacity ?? 0.8),
+            // borderRadius is only valid for BoxShape.rectangle
             borderRadius:
-                buttonBorderRadius ?? _StaticBuilderWidgets.smallBorderRadius,
+                (buttonShape ?? BoxShape.rectangle) == BoxShape.rectangle
+                    ? (buttonBorderRadius ??
+                        _StaticBuilderWidgets.smallBorderRadius)
+                    : null,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -536,9 +540,11 @@ class SBlur extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Return child directly when blur is disabled
+    if (!isEnabled && !isAnimated) return child;
+
     return isAnimated == false
         ? ImageFiltered(
-            enabled: isEnabled,
             imageFilter: ImageFilter.blur(
               sigmaX: blurAmountOnX,
               sigmaY: blurAmountOnY,

@@ -1,6 +1,6 @@
 ## 1.0.1
 
-* Version 1.0.1
+* pubspec.yaml updated
 
 ## 1.0.0
 

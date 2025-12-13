@@ -300,10 +300,21 @@ extension ShowSnackBar on BuildContext {
     required String message,
     Color backgroundColor = Colors.white,
   }) {
-    ScaffoldMessenger.of(this).showSnackBar(SnackBar(
-      content: Text(message),
-      backgroundColor: backgroundColor,
-    ));
+    // Use a post-frame callback to ensure the context is valid
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Verify the context is still mounted and valid
+      if (!mounted) return;
+
+      try {
+        ScaffoldMessenger.of(this).showSnackBar(SnackBar(
+          content: Text(message),
+          backgroundColor: backgroundColor,
+        ));
+      } catch (e) {
+        // If ScaffoldMessenger is not available, silently fail
+        debugPrint('Warning: Could not show snackbar - $e');
+      }
+    });
   }
 
   void showErrorSnackBar({required String message}) {
@@ -611,17 +622,26 @@ class ForcePhoneSizeOnWeb extends StatelessWidget {
 //************************************ */
 
 class SAnimatedBlur extends StatefulWidget {
-  final double? opacity;
   final Widget? child;
+  final double? opacity;
+  final Duration? duration;
+  final bool isBlurred;
   final BorderRadiusGeometry? borderRadius;
-  const SAnimatedBlur({super.key, this.opacity, this.child, this.borderRadius});
+  const SAnimatedBlur({
+    super.key,
+    this.child,
+    this.opacity,
+    this.borderRadius,
+    this.duration,
+    this.isBlurred = false,
+  });
 
   @override
   State<SAnimatedBlur> createState() => _SAnimatedBlurState();
 }
 
 class _SAnimatedBlurState extends State<SAnimatedBlur> {
-  bool _isVisible = false;
+  bool _isBlurred = false;
 
   @override
   void initState() {
@@ -629,34 +649,39 @@ class _SAnimatedBlurState extends State<SAnimatedBlur> {
     // Trigger animation on next frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        setState(() => _isVisible = true);
+        setState(() => _isBlurred = widget.isBlurred);
       }
     });
   }
 
   @override
+  void didUpdateWidget(SAnimatedBlur oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Animate when isAnimated changes
+    if (oldWidget.isBlurred != widget.isBlurred) {
+      setState(() => _isBlurred = widget.isBlurred);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: widget.borderRadius ?? BorderRadius.circular(32),
-      child: STweenAnimationBuilder<double>(
-        tween: Tween<double>(begin: 0.0, end: _isVisible ? 1.0 : 0.0),
-        duration: 0.3.sec,
-        curve: Curves.easeOut,
-        builder: (context, value, child) => ClipRRect(
+    return STweenAnimationBuilder<double>(
+      key: ValueKey(_isBlurred),
+      tween: Tween<double>(
+          begin: _isBlurred ? 0.0 : 1.0, end: _isBlurred ? 1.0 : 0.0),
+      duration: widget.duration ?? 0.3.sec,
+      curve: Curves.easeOut,
+      builder: (context, value, child) => ImageFiltered(
+        imageFilter: ImageFilter.blur(
+          sigmaX: value * 10.0,
+          sigmaY: value * 10.0,
+          tileMode: TileMode.decal,
+        ),
+        child: ClipRRect(
           borderRadius: widget.borderRadius ?? BorderRadius.circular(32),
-          clipBehavior: Clip.antiAlias,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: value * 5.0,
-              sigmaY: value * 5.0,
-            ),
-            child: ClipRRect(
-              borderRadius: widget.borderRadius ?? BorderRadius.circular(32),
-              child: Opacity(
-                opacity: value * (widget.opacity ?? 1),
-                child: widget.child,
-              ),
-            ),
+          child: Opacity(
+            opacity: widget.opacity ?? 1.0,
+            child: widget.child ?? const SizedBox.shrink(),
           ),
         ),
       ),

@@ -744,21 +744,14 @@ class _ScrollTextFormFieldWhenKeyboardIsShownState
 
   @override
   Widget build(BuildContext context) {
-    return Scrollable(
+    return SingleChildScrollView(
       controller: _scrollController,
-      viewportBuilder: (context, position) {
-        return SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          reverse: true,
-          // padding: EdgeInsets.only(
-          //   bottom: MediaQuery.of(context).viewInsets.bottom,
-          // ),
-          child: Focus(
-            focusNode: _focusNode,
-            child: widget.child,
-          ),
-        );
-      },
+      physics: const BouncingScrollPhysics(),
+      reverse: true,
+      child: Focus(
+        focusNode: _focusNode,
+        child: widget.child,
+      ),
     );
   }
 }

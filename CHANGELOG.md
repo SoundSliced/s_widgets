@@ -1,3 +1,8 @@
+## 1.1.0
+
+* **Bug Fix**: Fixed `ScrollTextFormFieldWhenKeyboardIsShown` widget causing runtime error "Unexpected null value" when scrolling (especially with mouse wheel on web)
+  * Replaced incorrect `Scrollable` + `viewportBuilder` pattern with a simple `SingleChildScrollView` that properly manages its own scroll position
+
 ## 1.0.1
 
 * pubspec.yaml updated

@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Updated `s_button` dependancy  
+
 ## 1.1.0
 
 * **Bug Fix**: Fixed `ScrollTextFormFieldWhenKeyboardIsShown` widget causing runtime error "Unexpected null value" when scrolling (especially with mouse wheel on web)

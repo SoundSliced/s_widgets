@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  s_widgets: ^1.1.0
+  s_widgets: ^1.1.1
 ```
 
 Then run:

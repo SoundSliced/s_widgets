@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:s_widgets/s_widgets.dart';
 
 void main() {
